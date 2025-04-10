@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 
@@ -21,11 +21,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable}  antialiased`}
       >
-        <Navbar/>
+        <div className="sticky top-0 z-50 bg-magnolia">
+
+          <Navbar />
+        </div>
         <div>
-        {children}
+          {children}
 
         </div>
       </body>

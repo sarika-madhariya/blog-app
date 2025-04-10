@@ -1,17 +1,44 @@
-import React from "react";
+'use client'
+import React, { useState } from "react";
 import ThemeSwitch from "./ThemeSwitch";
+import Image from "next/image";
 
 function Navbar() {
+  const [categoryHovered, setCategoryHovered] = useState(false);
+
   return (
-    <div className=" w-full flex justify-between px-16 py-4 ">
-      <span className="text-2xl font-bold text-purple-600">BlogHub</span>
-      <ul className="flex gap-10 text-lg">
-        <li>Home</li>
-        <li>Category</li>
-      </ul>
+    <div className="w-full flex justify-between items-center px-16 relative">
+      <Image src="/blog-logo.png" alt="logo" width={200} height={150} />
+
+      {/* Navigation Menu */}
+      <div
+        className="relative"
+        onMouseEnter={() => setCategoryHovered(true)}
+        onMouseLeave={() => setCategoryHovered(false)}
+      >
+        <ul className="flex gap-10 text-2xl text-dark-brown font-semibold transition-all">
+          <li className="hover:text-dark-brown/90 cursor-pointer">Home</li>
+          <li className="hover:text-dark-brown/90 cursor-pointer">Category</li>
+        </ul>
+
+        {/* Dropdown Menu */}
+        <ul
+          className={`bg-magnolia px-4 text-dark-brown rounded-md absolute top-12 left-24 shadow-md font-medium text-lg overflow-hidden transition-all duration-300 z-50 ${categoryHovered ? 'max-h-60' : 'max-h-0'
+            }`}
+        >
+          <li className="cursor-pointer py-1">Food</li>
+          <li className="cursor-pointer py-1">Travel</li>
+          <li className="cursor-pointer py-1">Photography</li>
+          <li className="cursor-pointer py-1">Beauty</li>
+        </ul>
+      </div>
+
+      {/* Right Side */}
       <div className="flex gap-6">
-        <ThemeSwitch/>
-        <button className="border-2 px-6 py-2 rounded-md border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white transition-all font-semibold cursor-pointer">Login</button>
+        {/* <ThemeSwitch /> */}
+        <button className="px-6 py-2 rounded-md text-white bg-dark-purple hover:bg-dark-purple/90 transition-all font-semibold cursor-pointer">
+          Login
+        </button>
       </div>
     </div>
   );
