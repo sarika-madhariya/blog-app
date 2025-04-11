@@ -25,9 +25,15 @@ function Home() {
           <p className='max-w-lg text-2xl text-dark-brown text-justify'>A delicious journey through recipes, flavors, and food stories from around the world. From comforting home-cooked meals to exotic dishes, this blog is your go-to for inspiration, tips, and a taste of something new every day.</p>
         </div>
       </section>
-      <section>
-
+      <section className='flex justify-between flex-row-reverse  mx-auto gap-32 items-center'>
+        <Image src={`/adventure.jpg`} alt='food' width={450} height={650} />
+        <div className='flex flex-col gap-12 text-dark-brown'>
+          <h2 className='text-4xl playfair-display font-medium text-dark-brown '>Discover Your Next Adventure
+          </h2>
+          <p className='max-w-lg text-2xl text-dark-brown text-justify'>Adventure awaits around every corner! Whether you&apos;re dreaming of sun-soaked beaches or hidden mountain trails, your next unforgettable journey is just a booking away. Pack your bags and let the fun begin!</p>
+        </div>
       </section>
+
 
     </div>
   )

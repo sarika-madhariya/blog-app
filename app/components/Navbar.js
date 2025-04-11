@@ -7,31 +7,33 @@ function Navbar() {
   const [categoryHovered, setCategoryHovered] = useState(false);
 
   return (
-    <div className="w-full flex justify-between items-center px-16 relative">
-      <Image src="/blog-logo.png" alt="logo" width={200} height={150} />
+    <nav className="w-full h-32 flex justify-between items-center px-16 relative shadow-lg shadow-purple/10">
+      <Image className="" src="/blog-logo.png" alt="logo" width={200} height={150} />
 
       {/* Navigation Menu */}
-      <div
-        className="relative"
-        onMouseEnter={() => setCategoryHovered(true)}
-        onMouseLeave={() => setCategoryHovered(false)}
-      >
-        <ul className="flex gap-10 text-2xl text-dark-brown font-semibold transition-all">
-          <li className="hover:text-dark-brown/90 cursor-pointer">Home</li>
-          <li className="hover:text-dark-brown/90 cursor-pointer">Category</li>
-        </ul>
+      <ul className="flex gap-10 text-2xl text-dark-brown font-semibold transition-all">
+        <li className="hover:text-dark-brown/90 cursor-pointer">Home</li>
 
-        {/* Dropdown Menu */}
-        <ul
-          className={`bg-magnolia px-4 text-dark-brown rounded-md absolute top-12 left-24 shadow-md font-medium text-lg overflow-hidden transition-all duration-300 z-50 ${categoryHovered ? 'max-h-60' : 'max-h-0'
-            }`}
+        {/* Category Hover Area */}
+        <div
+          className="relative"
+          onMouseEnter={() => setCategoryHovered(true)}
+          onMouseLeave={() => setCategoryHovered(false)}
         >
-          <li className="cursor-pointer py-1">Food</li>
-          <li className="cursor-pointer py-1">Travel</li>
-          <li className="cursor-pointer py-1">Photography</li>
-          <li className="cursor-pointer py-1">Beauty</li>
-        </ul>
-      </div>
+          <li className="hover:text-dark-brown/90 cursor-pointer">Category</li>
+
+          {/* Dropdown Menu */}
+          <ul
+            className={`bg-magnolia px-4 text-dark-brown rounded-md absolute top-10 left-0 shadow-md font-medium text-lg overflow-hidden transition-all duration-300 z-50 ${categoryHovered ? "max-h-60" : "max-h-0"
+              }`}
+          >
+            <li className="cursor-pointer py-1">Food</li>
+            <li className="cursor-pointer py-1">Travel</li>
+            <li className="cursor-pointer py-1">Photography</li>
+            <li className="cursor-pointer py-1">Beauty</li>
+          </ul>
+        </div>
+      </ul>
 
       {/* Right Side */}
       <div className="flex gap-6">
@@ -40,7 +42,7 @@ function Navbar() {
           Login
         </button>
       </div>
-    </div>
+    </nav>
   );
 }
 
