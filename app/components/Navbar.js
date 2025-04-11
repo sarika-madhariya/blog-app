@@ -24,13 +24,15 @@ function Navbar() {
 
           {/* Dropdown Menu */}
           <ul
-            className={`bg-magnolia px-4 text-dark-brown rounded-md absolute top-10 left-0 shadow-md font-medium text-lg overflow-hidden transition-all duration-300 z-50 ${categoryHovered ? "max-h-60" : "max-h-0"
+            className={`bg-magnolia px-4 w-fit text-dark-brown rounded-md absolute top-10 left-0 shadow-md font-medium text-lg overflow-hidden transition-all duration-300 z-50 ${categoryHovered ? "max-h-60" : "max-h-0"
               }`}
           >
-            <li className="cursor-pointer py-1">Food</li>
-            <li className="cursor-pointer py-1">Travel</li>
-            <li className="cursor-pointer py-1">Photography</li>
-            <li className="cursor-pointer py-1">Beauty</li>
+            <li className="cursor-pointer py-1 text-nowrap">Food</li>
+            <li className="cursor-pointer py-1 text-nowrap">Travel</li>
+            <li className="cursor-pointer py-1 text-nowrap">Health & Wellness</li>
+            <li className="cursor-pointer py-1 text-nowrap">Beauty</li>
+            <li className="cursor-pointer py-1 text-nowrap">Home & Lifestyle</li>
+
           </ul>
         </div>
       </ul>

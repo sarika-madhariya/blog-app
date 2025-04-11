@@ -33,7 +33,16 @@ function Home() {
           <p className='max-w-lg text-2xl text-dark-brown text-justify'>Adventure awaits around every corner! Whether you&apos;re dreaming of sun-soaked beaches or hidden mountain trails, your next unforgettable journey is just a booking away. Pack your bags and let the fun begin!</p>
         </div>
       </section>
-
+      <section className='flex justify-between  mx-auto gap-32 items-center'>
+        <Image src={`/food.jpg`} alt='food' width={450} height={650} />
+        <div className='flex flex-col gap-9 text-dark-brown'>
+         <div className='flex flex-col gap-6'> 
+          <h2 className='text-4xl playfair-display font-medium text-dark-brown '>Health & Wellness</h2>
+          <h3 className='text-2xl playfair-display font-medium text-dark-brown '>“Feel good inside and out.”</h3> 
+          </div>
+          <p className='max-w-lg cursor-text text-dark-brown text-justify'>Explore simple routines, wellness habits, and mindful living tips to help you stay balanced, energized, and healthy every day. From fitness ideas to mental peace and clean eating — it's all about your journey to a better you.</p>
+        </div>
+      </section>
 
     </div>
   )
