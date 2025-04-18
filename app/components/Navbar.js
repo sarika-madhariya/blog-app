@@ -31,7 +31,7 @@ function Navbar() {
             <li className="cursor-pointer py-1 text-nowrap">Travel</li>
             <li className="cursor-pointer py-1 text-nowrap">Health & Wellness</li>
             <li className="cursor-pointer py-1 text-nowrap">Beauty</li>
-            <li className="cursor-pointer py-1 text-nowrap">Home & Lifestyle</li>
+            <li className="cursor-pointer py-1 text-nowrap">Fashion</li>
 
           </ul>
         </div>
