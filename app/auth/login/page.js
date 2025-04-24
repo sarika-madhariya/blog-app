@@ -1,14 +1,57 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-
+import { signIn, useSession } from "next-auth/react";
+import { GlobalContext } from '@/app/lib/GlobalContext'
 
 function Login() {
+    const { data: session, status } = useSession()
+
     const { register, handleSubmit } = useForm();
     const [showPassword, setShowPassword] = useState(false);
+    const [serverErrorMsg, setServerErrorMsg] = useState("");
+    const { setGlobalLoading } = useContext(GlobalContext)
 
+
+    const router = useRouter();
+
+    const onSubmit = async (data) => {
+        setGlobalLoading(true); // Set loading state to true
+        try {
+            setServerErrorMsg(""); // clear previous errors
+
+            const result = await signIn("credentials", {
+                redirect: false,
+                emailId: data.emailId,
+                password: data.password,
+            });
+
+            if (!result.error) {
+                router.push("/");
+            } else {
+                console.error("Login failed:", result.error);
+                setServerErrorMsg(result.error); // show error to user
+            }
+        } catch (err) {
+            console.error("Unexpected error during sign in:", err);
+            setServerErrorMsg("Something went wrong. Please try again later.");
+        } finally {
+            setGlobalLoading(false); // Set loading state to false
+
+        }
+    };
+    useEffect(() => {
+        if (status === 'authenticated') {
+            router.push('/')
+        }
+    }, [status, router])
+
+    if (status === 'loading') return (<div className='fixed inset-0 flex items-center justify-center'><div className='loader'></div></div>)
+
+    if (session) return null
     return (
         <div className='bg-[url(/hero-bg.jpg)] bg-cover py-9'>
             <div className="flex flex-col items-center backdrop-blur-sm gap-9 mx-auto px-16  py-9  bg-white/50 w-fit rounded-xl ">
@@ -23,7 +66,7 @@ function Login() {
                 </div>
                 <form
                     className="relative z-10  flex flex-col  gap-6 "
-                    onSubmit={handleSubmit((data) => { console.log(data) })}
+                    onSubmit={handleSubmit(onSubmit)}
                 >
                     <div className="flex flex-col gap-6">
                         <input
@@ -54,7 +97,7 @@ function Login() {
                         </div>
                     </div>
 
-
+                    {serverErrorMsg && (<p className="text-red-500 text-sm mt-2">{serverErrorMsg}</p>)}
                     <button
                         type="submit"
                         className="w-full bg-dark-purple hover:bg-dark-purple/90 transition-all cursor-pointer text-white py-2 rounded-md text-lg font-semibold"
