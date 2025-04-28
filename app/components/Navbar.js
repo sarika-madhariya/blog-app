@@ -72,8 +72,10 @@ function Navbar() {
             <CategoryLi label={`Health & Wellness`} link={`health-and-wellness`} />
             <CategoryLi label={`Beauty`} link={`beauty`} />
             <CategoryLi label={`Fashion`} link={`fashion`} />
+            <CategoryLi label={`Other`} link={`other`} />
           </ul>
         </div>
+        {session && <li className="hover:text-dark-brown/90 cursor-pointer"><Link href={`/post-blog`}>Post Blog</Link></li>}
       </ul>
 
       {/* Right Side */}
@@ -120,3 +122,4 @@ export default Navbar;
 function CategoryLi({ label, link }) {
   return (<li ><Link href={`/category/${link}`} className="cursor-pointer py-2 text-nowrap">{label}</Link></li>)
 }
+

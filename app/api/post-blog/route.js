@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server'
 import connectDB from '@/app/lib/db'
-import BlogPost from '@/app/model/Blog'
+import BlogPost from '@/app/model/BlogPost'
 import cloudinary from '@/app/lib/cloudinary'
-import { v4 as uuidv4 } from 'uuid'
-import compressAndConvert from '@/app/lib/compressAndConvert'
+import slugify from 'slugify'
 
 export async function POST(request) {
     try {
@@ -15,11 +14,18 @@ export async function POST(request) {
             return NextResponse.json({ message: 'Invalid blog data.' }, { status: 400 })
         }
 
+        // Create a slug from the title, e.g. "This is my blog" → "this-is-my-blog"
+        const blogId = slugify(title, {
+            lower: true,
+            strict: true,    // strips out non-word chars
+            locale: 'en'
+        })
+
         // Helper to upload a single base64 image to Cloudinary
         const uploadBase64 = async (base64Str) => {
             try {
                 const res = await cloudinary.v2.uploader.upload(base64Str, {
-                    folder: 'blogs', // or `blogs/${blogId}` if you want per-blog folders
+                    folder: `blogs/${blogId}`, // optionally namespace by slug
                 })
                 return res.secure_url
             } catch (err) {
@@ -27,9 +33,6 @@ export async function POST(request) {
                 return null
             }
         }
-
-        // First generate blogId so you can namespace uploads if desired
-        const blogId = uuidv4()
 
         // Upload each section.image (if present) to Cloudinary
         const updatedSections = await Promise.all(
@@ -41,14 +44,14 @@ export async function POST(request) {
                 return {
                     heading: sec.heading,
                     content: sec.content,
-                    image: url, // secure URL or null
+                    image: url,
                 }
             })
         )
 
         // Save document with URLs only
         const blog = new BlogPost({
-            blogId,
+            blogId,      // slugified title
             title,
             category,
             author,

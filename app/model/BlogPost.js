@@ -32,7 +32,7 @@ const blogPostSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: ['Food', 'Fashion', 'Travel', 'Health & Wellness', 'Beauty', 'Other'],
+      enum: ['food', 'fashion', 'travel', 'health-and-wellness', 'beauty', 'other'],
     },
     author: {
       type: String,

@@ -57,7 +57,7 @@ function PostBlogForm() {
       const payload = {
         title: data.title,
         category: data.category,
-        author: session.user.email,
+        author: session.user.fullName,
         sections: processedSections,
       };
 
@@ -121,12 +121,12 @@ function PostBlogForm() {
               defaultValue=""
             >
               <option value="" disabled>Select a Category</option>
-              <option value="Food">Food</option>
-              <option value="Fashion">Fashion</option>
-              <option value="Travel">Travel</option>
-              <option value="Health & Wellness">Health & Wellness</option>
-              <option value="Beauty">Beauty</option>
-              <option value="Other">Other</option>
+              <option value="food">Food</option>
+              <option value="fashion">Fashion</option>
+              <option value="travel">Travel</option>
+              <option value="health-and-wellness">Health & Wellness</option>
+              <option value="beauty">Beauty</option>
+              <option value="other">Other</option>
             </select>
             {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
           </div>
