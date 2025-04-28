@@ -49,7 +49,7 @@ export default function BlogPage() {
             <div className="flex space-x-4 text-sm text-gray-500">
                 <span>{displayCategory}</span>
                 <span>•</span>
-                <span>By {blog.author}</span>
+                <span>By {blog.authorName}</span>
                 <span>•</span>
                 <time dateTime={blog.createdAt}>
                     {new Date(blog.createdAt).toLocaleDateString()}

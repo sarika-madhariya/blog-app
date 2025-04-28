@@ -8,9 +8,9 @@ export async function POST(request) {
     try {
         await connectDB()
         const body = await request.json()
-        const { title, category, author, sections } = body
+        const { title, category, author, authorName, sections } = body
 
-        if (!title || !category || !author || !sections?.length) {
+        if (!title || !category || !author || !authorName || !sections?.length) {
             return NextResponse.json({ message: 'Invalid blog data.' }, { status: 400 })
         }
 
@@ -55,11 +55,12 @@ export async function POST(request) {
             title,
             category,
             author,
+            authorName,
             sections: updatedSections,
         })
 
         await blog.save()
-        return NextResponse.json({ message: 'Blog created successfully', blog }, { status: 201 })
+        return NextResponse.json({ message: 'Blog created successfully', blogId }, { status: 201 })
 
     } catch (error) {
         console.error('Error creating blog:', error)

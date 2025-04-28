@@ -76,6 +76,7 @@ function Navbar() {
           </ul>
         </div>
         {session && <li className="hover:text-dark-brown/90 cursor-pointer"><Link href={`/post-blog`}>Post Blog</Link></li>}
+        {session && <li className="hover:text-dark-brown/90 cursor-pointer"><Link href={`/blogs/my-blogs`}>My Blogs</Link></li>}
       </ul>
 
       {/* Right Side */}

@@ -34,6 +34,10 @@ const blogPostSchema = new mongoose.Schema(
       required: true,
       enum: ['food', 'fashion', 'travel', 'health-and-wellness', 'beauty', 'other'],
     },
+    authorName: {
+      type: String,
+      required: true,
+    },
     author: {
       type: String,
       required: true,

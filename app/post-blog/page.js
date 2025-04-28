@@ -57,15 +57,18 @@ function PostBlogForm() {
       const payload = {
         title: data.title,
         category: data.category,
-        author: session.user.fullName,
+        author: session.user.id,
+        authorName: session.user.fullName,
         sections: processedSections,
       };
 
       const res = await axios.post('/api/post-blog', payload);
+      const gotoBlog = await res.data.blogId;
       if (res.status === 201) {
         setSuccessMsg('Blog posted successfully!');
         reset();
         setPreviews({});
+        router.push(`/blogs/${gotoBlog}`)
       } else {
         throw new Error('Failed to post blog.');
       }
