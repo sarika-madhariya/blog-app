@@ -2,14 +2,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import BlogSkeleton from '@/app/components/BlogSkeleton'
+import { useSession } from 'next-auth/react'
 
 export default function BlogPage() {
     const { blogId } = useParams()
+    const router = useRouter()
     const [blog, setBlog] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
+    const { data: session } = useSession()
 
     // map your stored slugs → display names
     const categoryMap = {
@@ -69,6 +72,14 @@ export default function BlogPage() {
                     )}
                 </section>
             ))}
+            {session?.user?.id === blog.author && (
+                <button
+                    onClick={() => router.push(`/blogs/${blogId}/edit`)}
+                    className="mt-6 bg-blue-600 hover:bg-blue-700 cursor-pointer text-white py-2 px-4 rounded"
+                >
+                    Edit
+                </button>
+            )}
         </article>
     )
 }

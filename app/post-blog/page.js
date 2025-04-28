@@ -62,7 +62,7 @@ function PostBlogForm() {
         sections: processedSections,
       };
 
-      const res = await axios.post('/api/post-blog', payload);
+      const res = await axios.post('/api/blogs/post-blog', payload);
       const gotoBlog = await res.data.blogId;
       if (res.status === 201) {
         setSuccessMsg('Blog posted successfully!');
