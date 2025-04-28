@@ -85,6 +85,15 @@ export async function PUT(req) {
         }
 
         const updatedData = await req.json();
+
+        // If password is provided, hash it
+        if (updatedData.password) {
+            updatedData.password = await bcrypt.hash(updatedData.password, 10);
+        } else {
+            // If password field is empty, remove it to avoid overwriting
+            delete updatedData.password;
+        }
+
         const updatedUser = await User.findByIdAndUpdate(id, updatedData, {
             new: true,
             runValidators: true,
@@ -99,13 +108,13 @@ export async function PUT(req) {
             { status: 200 }
         );
     } catch (error) {
+        console.error('User update error:', error);
         return NextResponse.json(
             { error: "Failed to update user", details: error.message },
             { status: 500 }
         );
     }
 }
-
 /**
  * Deletes a user by ID
  */
