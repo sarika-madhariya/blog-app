@@ -3,17 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
+import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import compressAndConvert from '../lib/compressAndConvert'
 
 function PostBlogForm() {
-
   const { data: session, status } = useSession()
   const router = useRouter()
 
-
-  const { register, handleSubmit, control, reset, formState: { errors } } = useForm({
+  const { register, handleSubmit, control, reset, formState: { errors }, setValue, getValues } = useForm({
     defaultValues: {
       title: '',
+      category: '',
       sections: [{ heading: '', content: '', image: null }]
     }
   })
@@ -25,26 +26,62 @@ function PostBlogForm() {
   const [loading, setLoading] = useState(false)
   const [successMsg, setSuccessMsg] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
-
   const [previews, setPreviews] = useState({})
 
   const onSubmit = async (data) => {
-    setLoading(true)
+    setLoading(true);
     try {
-      // Placeholder: replace with your API call logic
-      console.log('Submitted blog:', data)
-      setSuccessMsg('Blog posted successfully!')
-      reset()
+      // Convert each section.image (File) to base64
+      const processedSections = await Promise.all(
+        data.sections.map(async section => {
+          if (section.image instanceof File) {
+            const base64Image = await compressAndConvert(section.image, {
+              maxWidth: 800,     // cap dimensions
+              maxHeight: 800,
+              quality: 0.7       // 70% JPEG quality
+            })
+            return {
+              heading: section.heading,
+              content: section.content,
+              image: base64Image,
+            }
+          }
+          return {
+            heading: section.heading,
+            content: section.content,
+            image: null,
+          }
+        })
+      )
+
+      const payload = {
+        title: data.title,
+        category: data.category,
+        author: session.user.email,
+        sections: processedSections,
+      };
+
+      const res = await axios.post('/api/post-blog', payload);
+      if (res.status === 201) {
+        setSuccessMsg('Blog posted successfully!');
+        reset();
+        setPreviews({});
+      } else {
+        throw new Error('Failed to post blog.');
+      }
     } catch (error) {
-      setErrorMsg('Failed to post the blog. Try again.')
+      console.error('Blog post error:', error);
+      setErrorMsg('Failed to post the blog. Try again.');
     } finally {
-      setLoading(false)
+      setLoading(false);
       setTimeout(() => {
-        setSuccessMsg('')
-        setErrorMsg('')
-      }, 5000)
+        setSuccessMsg('');
+        setErrorMsg('');
+      }, 5000);
     }
-  }
+  };
+
+
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/auth/login')
@@ -52,7 +89,6 @@ function PostBlogForm() {
   }, [status, router])
 
   if (status === 'loading') return (<div className='fixed inset-0 flex items-center justify-center'><div className='loader'></div></div>)
-
   if (!session) return null
 
   return (
@@ -75,6 +111,24 @@ function PostBlogForm() {
               className="border border-gray-600 outline-none rounded-md h-12 px-6 text-sm"
             />
             {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
+          </div>
+
+          {/* Blog Category */}
+          <div className="flex flex-col gap-2">
+            <select
+              {...register("category", { required: "Category is required" })}
+              className="border border-gray-600 outline-none rounded-md h-12 px-6 text-sm "
+              defaultValue=""
+            >
+              <option value="" disabled>Select a Category</option>
+              <option value="Food">Food</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Travel">Travel</option>
+              <option value="Health & Wellness">Health & Wellness</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Other">Other</option>
+            </select>
+            {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
           </div>
 
           {/* Blog Sections */}
@@ -111,13 +165,13 @@ function PostBlogForm() {
                 </div>
                 <div className="flex flex-col gap-2 mb-2">
                   {previews[index] ? (
-                    <div className="relative   w-full ">
+                    <div className="relative w-full">
                       <Image
                         src={previews[index]}
                         alt="Preview"
                         width={500}
                         height={300}
-                        className="object-cover "
+                        className="object-cover"
                       />
                       <button
                         type="button"
@@ -133,15 +187,20 @@ function PostBlogForm() {
                     <input
                       type="file"
                       accept="image/*"
-                      {...register(`sections.${index}.image`)}
-                      className="border border-gray-600 outline-none rounded-md px-4 py-2 text-sm"
                       onChange={(e) => {
-                        const file = e.target.files?.[0]
+                        const file = e.target.files?.[0];
                         if (file) {
-                          setPreviews(prev => ({ ...prev, [index]: URL.createObjectURL(file) }))
+                          setPreviews(prev => ({ ...prev, [index]: URL.createObjectURL(file) }));
+
+                          // Directly update the form data
+                          const updatedSections = [...getValues("sections")];
+                          updatedSections[index].image = file;
+                          setValue("sections", updatedSections);
                         }
                       }}
+                      className="border border-gray-600 outline-none rounded-md px-4 py-2 text-sm"
                     />
+
                   )}
                 </div>
               </div>
