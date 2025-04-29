@@ -211,7 +211,7 @@ function PostBlogForm() {
             <button
               type="button"
               onClick={() => append({ heading: '', content: '', image: null })}
-              className="text-sm font-semibold text-dark-purple hover:underline"
+              className="text-sm font-semibold text-dark-purple hover:underline cursor-pointer"
             >
               + Add Section
             </button>

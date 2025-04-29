@@ -79,7 +79,7 @@ export default function BlogPage() {
             {session?.user?.id === blog.author && (
                 <button
                     onClick={() => router.push(`/blogs/${blogId}/edit`)}
-                    className="mt-6 bg-blue-600 hover:bg-blue-700 cursor-pointer text-white py-2 px-4 rounded"
+                    className="mt-6 bg-dark-purple hover:bg-dark-purple/90 transition-all cursor-pointer text-white py-2 px-4 rounded"
                 >
                     Edit
                 </button>

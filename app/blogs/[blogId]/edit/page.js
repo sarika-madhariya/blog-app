@@ -243,7 +243,7 @@ export default function EditBlogForm() {
                         <button
                             type="button"
                             onClick={() => append({ heading: '', content: '', image: null })}
-                            className="text-sm font-semibold text-dark-purple hover:underline"
+                            className="text-sm font-semibold cursor-pointer text-dark-purple hover:underline"
                         >
                             + Add Section
                         </button>
