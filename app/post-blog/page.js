@@ -87,7 +87,7 @@ function PostBlogForm() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/auth/login')
+      router.push(`/auth/login?callbackUrl=${encodeURIComponent(window.location.pathname)}`)
     }
   }, [status, router])
 

@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { signIn, useSession } from "next-auth/react";
+import { useSearchParams } from 'next/navigation'
 import { GlobalContext } from '@/app/lib/GlobalContext'
 
 function Login() {
@@ -15,6 +16,8 @@ function Login() {
     const [serverErrorMsg, setServerErrorMsg] = useState("");
     const { setGlobalLoading } = useContext(GlobalContext)
 
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl') || '/';
 
     const router = useRouter();
 
@@ -27,10 +30,11 @@ function Login() {
                 redirect: false,
                 emailId: data.emailId,
                 password: data.password,
+                callbackUrl
             });
 
             if (!result.error) {
-                router.push("/");
+                router.push(result.url || callbackUrl)
             } else {
                 console.error("Login failed:", result.error);
                 setServerErrorMsg(result.error); // show error to user
@@ -45,9 +49,9 @@ function Login() {
     };
     useEffect(() => {
         if (status === 'authenticated') {
-            router.push('/')
+            router.push(callbackUrl)
         }
-    }, [status, router])
+    }, [status, router, callbackUrl])
 
     if (status === 'loading') return (<div className='fixed inset-0 flex items-center justify-center'><div className='loader'></div></div>)
 

@@ -62,7 +62,10 @@ export default function BlogPage() {
             {blog.sections.map(sec => (
                 <section key={sec._id} className="space-y-4">
                     <h2 className="text-2xl font-semibold">{sec.heading}</h2>
-                    <p className="text-gray-700">{sec.content}</p>
+                    <div
+                        className="text-gray-700"
+                        dangerouslySetInnerHTML={{ __html: sec.content }}
+                    ></div>
                     {sec.image && (
                         <img
                             src={sec.image}
@@ -72,6 +75,7 @@ export default function BlogPage() {
                     )}
                 </section>
             ))}
+
             {session?.user?.id === blog.author && (
                 <button
                     onClick={() => router.push(`/blogs/${blogId}/edit`)}
