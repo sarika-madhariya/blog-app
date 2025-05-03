@@ -136,7 +136,7 @@ function SignUp() {
                   setTimeout(() => setShowPassword(false), 1000);
                 }}
               >
-                <Image src={showPassword ? '/hide-password.svg' : '/show-password.svg'} alt="toggle" width={24} height={24} />
+                <Image src={showPassword ? 'hide-password.svg' : 'show-password.svg'} alt="toggle" width={24} height={24} />
               </div>
               {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
             </div>
