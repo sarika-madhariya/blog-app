@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Providers from "./lib/Providers";
 import App from "./App";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,8 +28,9 @@ export default function RootLayout({ children }) {
       >
         <Providers>
           <div className="sticky top-0 z-50 bg-magnolia">
-
-            <Navbar />
+            <Suspense fallback={null}>
+              <Navbar />
+            </Suspense>
           </div>
           <div>
             <App>
