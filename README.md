@@ -40,8 +40,7 @@ cd blog-hub
 ### **2. Install dependencies**
 ```bash
 npm install
-# or
-yarn install
+
 ```
 
 ### **3. Create your `.env.local` file**
